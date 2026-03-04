@@ -10,7 +10,7 @@ A collection of PowerShell scripts to optimize performance, free disk space, and
 
 ```powershell
 # 1. Clone the repo
-git clone https://github.com/yourusername/win11-dev-toolkit.git
+git clone https://github.com/Mudassar-Khann/windows-performance-dev-toolkit.git
 cd win11-dev-toolkit
 
 # 2. Allow scripts to run (one-time setup)
