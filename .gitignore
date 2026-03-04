@@ -1,0 +1,14 @@
+# Logs
+*.log
+
+# OS files
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Editor folders
+.vscode/
+.idea/
+
+# PowerShell test output
+*.tmp
