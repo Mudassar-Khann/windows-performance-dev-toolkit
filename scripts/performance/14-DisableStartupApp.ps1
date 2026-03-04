@@ -1,21 +1,24 @@
 #Requires -RunAsAdministrator
 <#
 .SYNOPSIS    Removes a specific application from Windows startup registry entries.
-.SAFETY      Safe — edit $appName before running. Only touches registry Run keys.
+.SAFETY      Safe — only touches registry Run keys.
 .GAIN        Faster boot, less RAM consumed at startup.
 
 HOW TO USE:
-  1. Run script 18 (List Startup Programs) first to get the exact app name.
-  2. Set $appName below to match exactly.
-  3. Run this script.
+  Called from Run-Toolkit.ps1 which prompts for the app name.
+  Or run directly: .\14-DisableStartupApp.ps1 -AppName "Discord"
+  Get exact names from script 18 (List Startup Programs).
 #>
+
+param(
+    [Parameter(Mandatory = $true)]
+    [string]$AppName
+)
 
 Write-Host ""
 Write-Host "  [14] Disable Startup App" -ForegroundColor Cyan
 Write-Host "  ─────────────────────────────────────────" -ForegroundColor DarkGray
-
-# ── EDIT THIS: Set to exact name from script 18 output ──
-$appName = "Discord"
+Write-Host "  → Searching for '$AppName' in startup registry locations..." -ForegroundColor DarkGray
 
 $regPaths = @(
     "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run",
@@ -25,14 +28,14 @@ $regPaths = @(
 
 $found = $false
 foreach ($path in $regPaths) {
-    if (Get-ItemProperty -Path $path -Name $appName -ErrorAction SilentlyContinue) {
-        Remove-ItemProperty -Path $path -Name $appName -Force
-        Write-Host "  ✔  Removed '$appName' from: $path" -ForegroundColor Yellow
+    if (Get-ItemProperty -Path $path -Name $AppName -ErrorAction SilentlyContinue) {
+        Remove-ItemProperty -Path $path -Name $AppName -Force -ErrorAction SilentlyContinue
+        Write-Host "  ✔  Removed '$AppName' from: $path" -ForegroundColor Yellow
         $found = $true
     }
 }
 
 if (-not $found) {
-    Write-Host "  –  '$appName' not found in any startup registry location." -ForegroundColor DarkGray
-    Write-Host "  ℹ  Run script 18 to list startup programs and find the exact name." -ForegroundColor DarkGray
+    Write-Host "  –  '$AppName' not found in any startup registry location." -ForegroundColor DarkGray
+    Write-Host "  ℹ  Run script 18 to list all startup programs and find the exact name." -ForegroundColor DarkGray
 }
